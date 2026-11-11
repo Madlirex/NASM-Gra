@@ -21,6 +21,16 @@ section .data
     intro_msg db "Let's play a game of hangman!", 0
     intro_msg_len equ $ - intro_msg
 
+    prompt_msg db "Your guess: ", 0
+    prompt_msg_len equ $ - prompt_msg
+    prompt_input_format db "%c"
+
+    wrong_msg db "Wrong guess!", 0
+    wrong_msg_len equ $ - wrong_msg
+
+    try_again_msg db "Try again!", 0
+    try_again_msg_len equ $ - try_again_msg
+
 section .bss
     inHandle resq 1
     outHandle resq 1
