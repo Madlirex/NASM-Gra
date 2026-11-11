@@ -15,6 +15,7 @@ extern Sleep
 section .data
     STD_OUTPUT_HANDLE equ -11
     STD_INPUT_HANDLE equ -10
+    BUFFER_SIZE equ 64
 
     stage db 0
 
@@ -23,7 +24,6 @@ section .data
 
     prompt_msg db "Your guess: ", 0
     prompt_msg_len equ $ - prompt_msg
-    prompt_input_format db "%c"
 
     wrong_msg db "Wrong guess!", 0
     wrong_msg_len equ $ - wrong_msg
@@ -37,7 +37,7 @@ section .bss
 
     chars_written resd 1
     chars_read    resd 1
-    buffer        resb 64
+    buffer        resb BUFFER_SIZE
 
 section .text
     global main
@@ -72,6 +72,23 @@ print:
     mov qword [rsp + 32], 0
 
     call WriteConsoleA
+
+    add rsp, 40
+    ret
+
+; CHAR input_char()
+input_char:
+    sub rsp, 40
+
+    mov rcx, [inHandle]
+    lea rdx, [buffer]
+    mov r8, BUFFER_SIZE
+    lea r9, [chars_read]
+    mov qword [rsp + 32], 0
+
+    call ReadConsoleA
+
+    movzx rax, byte [buffer]
 
     add rsp, 40
     ret
