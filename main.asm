@@ -42,25 +42,25 @@ section .data
 
     stage db 0
 
-    intro_msg db "Let's play a game of hangman!", 0
+    intro_msg db "Let's play a game of hangman!", 10
     intro_msg_len equ $ - intro_msg
 
-    prompt_msg db 10, "Your guess: ", 0
+    prompt_msg db 10, "Your guess: "
     prompt_msg_len equ $ - prompt_msg
 
-    wrong_msg db 10, "Wrong guess!", 0
+    wrong_msg db 10, "Wrong guess!", 10
     wrong_msg_len equ $ - wrong_msg
 
-    invalid_msg db 10, "Invalid character! (a-z/A-Z)", 0
+    invalid_msg db 10, "Invalid character! (a-z/A-Z)", 10
     invalid_msg_len equ $ - invalid_msg
 
-    used_msg db 10, "Character already used try again!", 0
+    used_msg db 10, "Character already used try again!", 10
     used_msg_len equ $ - used_msg
 
-    won_msg db 10, "You won! The word was: ", 0
+    won_msg db 10, "You won! The word was: "
     won_msg_len equ $ - won_msg
 
-    lost_msg db 10, "You lost! The word was: ", 0
+    lost_msg db 10, "You lost! The word was: "
     lost_msg_len equ $ - lost_msg
 
 section .bss
