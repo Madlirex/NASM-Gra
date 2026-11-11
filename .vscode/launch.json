@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run & Debug ASM",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${fileDirname}\\bin\\${fileBasenameNoExtension}.exe",
+      "cwd": "${fileDirname}",
+      "preLaunchTask": "build-asm",
+      "MIMode": "gdb",
+      "miDebuggerPath": "gdb",
+      "stopAtEntry": false,
+      "externalConsole": true
+    }
+  ]
+}

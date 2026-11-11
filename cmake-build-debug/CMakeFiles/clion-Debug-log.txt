@@ -1,0 +1,6 @@
+C:\Users\simon\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=C:/Users/simon/AppData/Local/Programs/CLion/bin/ninja/win/x64/ninja.exe -G Ninja -S C:\Users\simon\Projekty\x86_64_Assembly\Gra -B C:\Users\simon\Projekty\x86_64_Assembly\Gra\cmake-build-debug
+-- The ASM_NASM compiler identification is NASM
+-- Found assembler: C:/Users/simon/AppData/Local/bin/NASM/nasm.exe
+-- Configuring done (0.8s)
+-- Generating done (0.1s)
+-- Build files have been written to: C:/Users/simon/Projekty/x86_64_Assembly/Gra/cmake-build-debug

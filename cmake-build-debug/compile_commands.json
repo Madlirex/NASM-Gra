@@ -1,0 +1,8 @@
+[
+{
+  "directory": "C:/Users/simon/Projekty/x86_64_Assembly/Learning/cmake-build-debug",
+  "command": "C:\\Users\\simon\\AppData\\Local\\bin\\NASM\\nasm.exe -f win64 -f win32 -o CMakeFiles\\asmtest.dir\\main.asm.obj C:\\Users\\simon\\Projekty\\x86_64_Assembly\\Learning\\main.asm",
+  "file": "C:/Users/simon/Projekty/x86_64_Assembly/Learning/main.asm",
+  "output": "C:/Users/simon/Projekty/x86_64_Assembly/Learning/cmake-build-debug/CMakeFiles/asmtest.dir/main.asm.obj"
+}
+]

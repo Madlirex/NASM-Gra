@@ -1,0 +1,17 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build-asm",
+      "type": "shell",
+      "command": "if (-not (Test-Path \"bin\")) { New-Item -ItemType Directory \"bin\" }; nasm -f win64 \"${file}\" -o \"bin\\${fileBasenameNoExtension}.o\"; gcc \"bin\\${fileBasenameNoExtension}.o\" -o \"bin\\${fileBasenameNoExtension}.exe\" -mconsole",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ]
+}

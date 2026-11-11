@@ -1,0 +1,26 @@
+{
+	"kind" : "toolchains",
+	"toolchains" : 
+	[
+		{
+			"compiler" : 
+			{
+				"id" : "NASM",
+				"implicit" : {},
+				"path" : "C:/Users/simon/AppData/Local/bin/NASM/nasm.exe",
+				"version" : ""
+			},
+			"language" : "ASM_NASM",
+			"sourceFileExtensions" : 
+			[
+				"nasm",
+				"asm"
+			]
+		}
+	],
+	"version" : 
+	{
+		"major" : 1,
+		"minor" : 0
+	}
+}

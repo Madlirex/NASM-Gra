@@ -1,0 +1,3 @@
+C:/Users/simon/Projekty/x86_64_Assembly/Gra/cmake-build-debug/CMakeFiles/gra_manual.dir
+C:/Users/simon/Projekty/x86_64_Assembly/Gra/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/simon/Projekty/x86_64_Assembly/Gra/cmake-build-debug/CMakeFiles/rebuild_cache.dir
