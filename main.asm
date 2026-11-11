@@ -31,6 +31,7 @@ section .data
 
     WORD_BUFFER_SIZE equ 64
     FILE_BUFFER_SIZE equ 4096
+    STAGE_BUFFER_SIZE equ 4096
 
     GENERIC_READ          equ 0x80000000
     FILE_SHARE_READ       equ 1
@@ -39,6 +40,7 @@ section .data
     INVALID_HANDLE_VALUE  equ -1
 
     words_file db "words.txt", 0
+    stage_file db "stages/stage0.txt", 0
 
     stage db 0
 
@@ -74,6 +76,9 @@ section .bss
     file_handle     resq 1
     bytes_read      resd 1
     file_buffer     resb FILE_BUFFER_SIZE
+
+    stage_buffer     resb STAGE_BUFFER_SIZE
+    stage_buffer_len resq 1
 
     secret_word     resb WORD_BUFFER_SIZE
     secret_word_len resq 1
@@ -111,6 +116,8 @@ main:
     ret
 
 .turn:
+    call print_stage
+
     movzx rax, byte [stage]
     cmp rax, 6
     jge .lost
@@ -240,6 +247,33 @@ check_win:
 
 .all_revealed:
     mov rax, 1
+    ret
+
+print_stage:
+    movzx rax, byte [stage]
+    add al, '0'
+    lea rcx, [stage_file]
+    mov [rcx + 12], al
+
+    call open_file
+    cmp rax, INVALID_HANDLE_VALUE
+    je .done
+    mov [file_handle], rax
+
+    mov rcx, [file_handle]
+    lea rdx, [stage_buffer]
+    mov r8d, STAGE_BUFFER_SIZE - 1
+    call read_file
+    mov [stage_buffer_len], rax
+
+    mov rcx, [file_handle]
+    call close_file
+
+    lea rcx, [stage_buffer]
+    mov rdx, [stage_buffer_len]
+    call print
+
+.done:
     ret
 
 ; VOID print(STRING* message, INT length)
