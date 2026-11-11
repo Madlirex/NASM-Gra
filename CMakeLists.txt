@@ -14,7 +14,7 @@ set(OUT ${CMAKE_SOURCE_DIR}/bin/gra.exe)
 
 add_custom_target(gra_manual ALL
         COMMAND nasm -f win64 ${SRC} -o ${CMAKE_BINARY_DIR}/main.obj
-        COMMAND gcc ${CMAKE_BINARY_DIR}/main.obj -o ${OUT} -luser32 -lgdi32 -mwindows
+        COMMAND gcc ${CMAKE_BINARY_DIR}/main.obj -o ${OUT}
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
         COMMENT "Assembling and linking NASM manually"
 )
