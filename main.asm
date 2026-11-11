@@ -45,14 +45,23 @@ section .data
     intro_msg db "Let's play a game of hangman!", 0
     intro_msg_len equ $ - intro_msg
 
-    prompt_msg db "Your guess: ", 0
+    prompt_msg db 10, "Your guess: ", 0
     prompt_msg_len equ $ - prompt_msg
 
-    wrong_msg db "Wrong guess!", 0
+    wrong_msg db 10, "Wrong guess!", 0
     wrong_msg_len equ $ - wrong_msg
 
-    try_again_msg db "Try again!", 0
-    try_again_msg_len equ $ - try_again_msg
+    invalid_msg db 10, "Invalid character! (a-z/A-Z)", 0
+    invalid_msg_len equ $ - invalid_msg
+
+    used_msg db 10, "Character already used try again!", 0
+    used_msg_len equ $ - used_msg
+
+    won_msg db 10, "You won! The word was: ", 0
+    won_msg_len equ $ - won_msg
+
+    lost_msg db 10, "You lost! The word was: ", 0
+    lost_msg_len equ $ - lost_msg
 
 section .bss
     inHandle resq 1
@@ -68,6 +77,11 @@ section .bss
 
     secret_word     resb WORD_BUFFER_SIZE
     secret_word_len resq 1
+
+    display_word     resb WORD_BUFFER_SIZE * 2 + 1
+    display_word_len resq 1
+
+    guessed_letters  resb 26
 
 section .text
     global main
@@ -85,22 +99,147 @@ main:
     mov rdx, intro_msg_len
     call print
 
-    call input_char
+    call load_random_word
+    call init_display_word
 
-    lea rcx, [buffer]
-    mov rdx, BUFFER_SIZE
+    call .turn
+
+    mov rcx, 60000
+    call sleep
+
+    xor rax, rax
+    ret
+
+.turn:
+    movzx rax, byte [stage]
+    cmp rax, 6
+    jge .lost
+
+    lea rcx, [display_word]
+    mov rdx, [display_word_len]
     call print
 
-    call load_random_word
+    call check_win
+    cmp rax, 1
+    je .won
+
+    lea rcx, [prompt_msg]
+    mov rdx, prompt_msg_len
+    call print
+
+    call input_char
+
+    or al, 0x20
+
+    cmp al, 'a'
+    jl .invalid
+    cmp al, 'z'
+    jg .invalid
+
+    movzx rcx, al
+    sub rcx, 'a'
+    lea rdx, [guessed_letters]
+    cmp byte [rdx + rcx], 1
+    je .already_used
+
+    mov byte [rdx + rcx], 1
+
+    mov cl, al
+    call process_guess
+    cmp rax, 1
+    je .turn
+
+    jmp .wrong
+
+.invalid:
+    lea rcx, [invalid_msg]
+    mov rdx, invalid_msg_len
+    call print
+    jmp .turn
+
+.already_used:
+    lea rcx, [used_msg]
+    mov rdx, used_msg_len
+    call print
+    jmp .turn
+
+.wrong:
+    inc byte [stage]
+
+    lea rcx, [wrong_msg]
+    mov rdx, wrong_msg_len
+    call print
+    jmp .turn
+
+.won:
+    lea rcx, [won_msg]
+    mov rdx, won_msg_len
+    call print
 
     lea rcx, [secret_word]
     mov rdx, [secret_word_len]
     call print
 
-    mov rcx, 5000
-    call sleep
+    ret
 
+.lost:
+    lea rcx, [lost_msg]
+    mov rdx, lost_msg_len
+    call print
+
+    lea rcx, [secret_word]
+    mov rdx, [secret_word_len]
+    call print
+
+    ret
+
+; BOOL process_guess(CHAR guess)
+process_guess:
+    lea rsi, [secret_word]
+    lea rdi, [display_word]
+    mov r8, [secret_word_len]
+    xor r9, r9
     xor rax, rax
+
+.scan_loop:
+    cmp r9, r8
+    jge .scan_done
+
+    mov dl, [rsi + r9]
+    or dl, 0x20
+    cmp dl, cl
+    jne .next_char
+
+    mov [rdi + r9 * 2], dl
+    mov rax, 1
+
+.next_char:
+    inc r9
+    jmp .scan_loop
+
+.scan_done:
+    ret
+
+; BOOL check_win()
+check_win:
+    lea rdi, [display_word]
+    mov r8, [secret_word_len]
+    xor r9, r9
+
+.check_loop:
+    cmp r9, r8
+    jge .all_revealed
+    cmp byte [rdi + r9 * 2], '_'
+    je .still_hidden
+    inc r9
+    jmp .check_loop
+
+.still_hidden:
+    xor rax, rax
+    ret
+
+.all_revealed:
+    mov rax, 1
     ret
 
 ; VOID print(STRING* message, INT length)
@@ -202,6 +341,26 @@ get_random:
 
     pop rbx
     add rsp, 40
+    ret
+
+; VOID init_display_word()
+init_display_word:
+    lea rdi, [display_word]
+    mov rcx, [secret_word_len]
+    xor rax, rax
+
+.build_loop:
+    cmp rax, rcx
+    jge .finish_build
+    mov byte [rdi + rax * 2], '_'
+    mov byte [rdi + rax * 2 + 1], ' '
+    inc rax
+    jmp .build_loop
+
+.finish_build:
+    mov byte [rdi + rax * 2], 10
+    lea rdx, [rax * 2 + 1]
+    mov [display_word_len], rdx
     ret
 
 ; VOID load_random_word()
