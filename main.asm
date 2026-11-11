@@ -33,11 +33,11 @@ section .data
     FILE_BUFFER_SIZE equ 4096
     STAGE_BUFFER_SIZE equ 4096
 
-    GENERIC_READ          equ 0x80000000
-    FILE_SHARE_READ       equ 1
-    OPEN_EXISTING         equ 3
+    GENERIC_READ equ 0x80000000
+    FILE_SHARE_READ equ 1
+    OPEN_EXISTING equ 3
     FILE_ATTRIBUTE_NORMAL equ 0x80
-    INVALID_HANDLE_VALUE  equ -1
+    INVALID_HANDLE_VALUE equ -1
 
     words_file db "words.txt", 0
     stage_file db "stages/stage0.txt", 0
@@ -70,23 +70,23 @@ section .bss
     outHandle resq 1
 
     chars_written resd 1
-    chars_read    resd 1
-    buffer        resb BUFFER_SIZE
+    chars_read resd 1
+    buffer resb BUFFER_SIZE
 
-    file_handle     resq 1
-    bytes_read      resd 1
-    file_buffer     resb FILE_BUFFER_SIZE
+    file_handle resq 1
+    bytes_read resd 1
+    file_buffer resb FILE_BUFFER_SIZE
 
-    stage_buffer     resb STAGE_BUFFER_SIZE
+    stage_buffer resb STAGE_BUFFER_SIZE
     stage_buffer_len resq 1
 
-    secret_word     resb WORD_BUFFER_SIZE
+    secret_word resb WORD_BUFFER_SIZE
     secret_word_len resq 1
 
-    display_word     resb WORD_BUFFER_SIZE * 2 + 1
+    display_word resb WORD_BUFFER_SIZE * 2 + 1
     display_word_len resq 1
 
-    guessed_letters  resb 26
+    guessed_letters resb 26
 
 section .text
     global main
